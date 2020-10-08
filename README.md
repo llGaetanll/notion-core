@@ -114,5 +114,18 @@ You're gonna need to use this component to create new dynamic components.
 | editProps        |          | Object         | Any props passed to `editComponent`           |
 | mode             |          | String         | The default mode of the component. If not defined, the component will not render | 
 
+## TODO
+- Create `Page` Component. (Reponsible for drag-n-dropability of dynamic components). 
+  Might use react-beautiful-dnd for this.
+- Create proper Docs/Wiki and elaborate on making custom components.
+- Move away from any styles library. Right now parts of the project still use Material-UI. Designers welcome!
+  - Allow the versatility of using any passed down component for styles. 
+- Create more dynamic components. As of now only `TextField` has been written. Ideas include
+  - Image
+  - Calendar
+  - Code Block
+  - LaTeX Block
+  - Links
+
 ## PRs are welcome!
 If you want to help me out on this project, feel free! Any suggestions are welcome :)
