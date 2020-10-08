@@ -14,10 +14,16 @@ import { setMenu, FeedbackContext } from '../util/feedback';
 const useStyles = makeStyles(theme => ({
   component: {
     display: 'flex',
+    // size padding
+    padding: `0 ${theme.spacing(1)}px`,
 
     // display actions menu on hover
-    '&:hover $action': {
-      opacity: 1
+    '&:hover': {
+      '$action': {
+        opacity: 1
+      },
+
+      backgroundColor: theme.palette.grey[100]
     },
 
     minHeight: 48,

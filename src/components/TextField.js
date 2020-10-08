@@ -9,10 +9,10 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   display: {
-
+    width: '100%'
   },
   edit: {
-
+    width: '100%'
   }
 }));
 
