@@ -18,11 +18,11 @@ const useStyles = makeStyles(theme => ({
     padding: `0 ${theme.spacing(1)}px`,
 
     // display actions menu on hover
-    '&:hover': {
-      '$action': {
-        opacity: 1
-      },
+    '&:hover $action': {
+      opacity: 1
+    },
 
+    '&:hover': {
       backgroundColor: theme.palette.grey[100]
     },
 
