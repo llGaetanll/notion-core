@@ -1,18 +1,15 @@
 import React, { useEffect, useRef } from "react";
-import ComponentWrapper from './index';
+import ComponentWrapper from "../index";
 
-import {
-  Typography,
-  InputBase as MuiInputBase
-} from "@material-ui/core";
+import { Typography, InputBase as MuiInputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   display: {
-    width: '100%'
+    width: "100%"
   },
   edit: {
-    width: '100%'
+    width: "100%"
   }
 }));
 
@@ -21,28 +18,32 @@ const TextDisplayComponent = ({ text, setComponentMode, ...props }) => {
 
   // when the user hovers over the element
   // switch to edit mode
-  const handleEdit = () =>
-    setComponentMode("edit");
+  const handleEdit = () => setComponentMode("edit");
 
   return (
-    <Typography 
-      onMouseEnter={handleEdit} 
-      className={classes.display} 
+    <Typography
+      onMouseEnter={handleEdit}
+      className={classes.display}
       {...props}
     >
       {text}
     </Typography>
   );
-}
+};
 
-const TextEditComponent = ({ text = '', setText, setComponentMode, ...props }) => {
+const TextEditComponent = ({
+  text = "",
+  setText,
+  setComponentMode,
+  ...props
+}) => {
   const ref = useRef();
   const classes = useStyles();
-  
+
   // focus the input ref
   useEffect(() => {
     ref.current.focus();
-  })
+  });
 
   const handleEdit = event => setText(event.target.value);
 
@@ -55,10 +56,10 @@ const TextEditComponent = ({ text = '', setText, setComponentMode, ...props }) =
       {...props}
     />
   );
-}
+};
 
-const TextField = ({ text, setText, displayProps, editProps }) =>
-  <ComponentWrapper 
+const TextField = ({ text, setText, displayProps, editProps }) => (
+  <ComponentWrapper
     displayComponent={<TextDisplayComponent />}
     editComponent={<TextEditComponent />}
     displayProps={{
@@ -71,11 +72,12 @@ const TextField = ({ text, setText, displayProps, editProps }) =>
       ...editProps
     }}
     // default mode of the component
-    // this can be changed from within 
-    // the component as both the edit 
+    // this can be changed from within
+    // the component as both the edit
     // and display component have access
     // to `setComponentMode`
-    mode="display" 
+    mode="display"
   />
+);
 
 export default TextField;

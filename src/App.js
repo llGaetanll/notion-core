@@ -1,21 +1,20 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 import { FeedbackProvider } from "./util/feedback";
 
-import TextField from './components/TextField';
+import TextField from "./components/dynamic/TextField";
 
 const App = () => {
-  const [text, setText] = useState('hello world');
+  const [text, setText] = useState("hello world");
 
   return (
-    <div style={{height: '100%', width: 400, margin: '0 auto'}}>
+    <div style={{ height: "100%", width: 400, margin: "0 auto" }}>
       <FeedbackProvider>
         <h1>notion/core</h1>
         <TextField text={text} setText={setText} />
       </FeedbackProvider>
     </div>
   );
-}
+};
 
 export default App;
-
