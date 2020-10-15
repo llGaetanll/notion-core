@@ -1,4 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
+import { Draggable } from "react-beautiful-dnd";
 
 import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
 
@@ -98,10 +99,12 @@ const DynamicComponent = ({ displayComponent, editComponent, ...props }) => {
   );
 
   return (
-    <Box className={classes.component}>
-      <Actions />
-      {Component}
-    </Box>
+    <Draggable>
+      <Box className={classes.component}>
+        <Actions />
+        {Component}
+      </Box>
+    </Draggable>
   );
 };
 

@@ -41,9 +41,9 @@ const TextEditComponent = ({
   const classes = useStyles();
 
   // focus the input ref
-  useEffect(() => {
-    ref.current.focus();
-  });
+  // useEffect(() => {
+  //   ref.current.focus();
+  // });
 
   const handleEdit = event => setText(event.target.value);
 
