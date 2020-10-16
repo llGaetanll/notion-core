@@ -69,9 +69,9 @@ const Column = ({ column, index }) => {
   return (
     <Droppable key={index} droppableId={`${index}`}>
       {(provided, snapshot) => (
-        <div 
-          ref={provided.innerRef} 
-          style={getColumnStyle(column.length > 0)} 
+        <div
+          ref={provided.innerRef}
+          style={getColumnStyle(column.length > 0)}
           {...provided.droppableProps}
         >
           {column.map((dynComp, j) => (
@@ -128,7 +128,7 @@ const Page = () => {
       // update resulting columns
       newColumns[sourceIndex] = sourceColumn;
       newColumns[destIndex] = destColumn;
-      
+
     }
 
     // clear any potentially empty columns
@@ -142,8 +142,8 @@ const Page = () => {
   return (
     <DragDropContext onBeforeCapture={handleAddColumn} onDragEnd={handleDragEnd}>
       <div style={{ display: 'flex' }}>
-        {columns.map((column, i) => 
-          <Column column={column} index={i} />
+        {columns.map((column, i) =>
+          <Column column={column} index={i} key={i} />
         )}
       </div>
     </DragDropContext>
