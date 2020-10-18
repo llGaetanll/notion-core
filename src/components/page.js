@@ -138,7 +138,8 @@ const Page = () => {
     setColumns(newColumns);
   };
 
-  const handleAddColumn = () => setColumns(col => [[], ...col, []]);
+  const handleAddColumn = () =>
+    setColumns(col => [[], ...col.map(c => [c, []]).flat()]);
 
   const handleAddElement = index => {
     const cols = Array.from(columns);
