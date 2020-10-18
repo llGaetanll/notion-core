@@ -53,33 +53,24 @@ const getItemStyle = (isDragging, draggableStyle) => ({
 });
 
 const getColumnStyle = hasItems => ({
-  background: hasItems ? "transparent" : 'lightBlue',
+  background: hasItems ? "transparent" : "lightBlue",
   padding: grid,
-  display: 'flex',
+  display: "flex",
   flex: hasItems ? 1 : 0,
-  flexDirection: 'column',
+  flexDirection: "column"
 });
 
-const Column = ({ column, index }) => {
-
-  const handleAddElement = () => {
-    console.log('add element')
-  }
-
+const Column = ({ column, index, onAddElement }) => {
   return (
     <Droppable key={index} droppableId={`${index}`}>
       {(provided, snapshot) => (
-        <div 
-          ref={provided.innerRef} 
-          style={getColumnStyle(column.length > 0)} 
+        <div
+          ref={provided.innerRef}
+          style={getColumnStyle(column.length > 0)}
           {...provided.droppableProps}
         >
           {column.map((dynComp, j) => (
-            <Draggable
-              key={dynComp.id}
-              draggableId={dynComp.id}
-              index={j}
-            >
+            <Draggable key={dynComp.id} draggableId={dynComp.id} index={j}>
               {(provided, snapshot) => (
                 <div
                   ref={provided.innerRef}
@@ -95,17 +86,20 @@ const Column = ({ column, index }) => {
               )}
             </Draggable>
           ))}
-          {column.length > 0 && (<button onClick={handleAddElement}>add element</button>)}
+          {provided.placeholder}
+          {column.length > 0 && (
+            <button onClick={() => onAddElement(index)}>add element</button>
+          )}
         </div>
       )}
     </Droppable>
   );
-}
+};
 
 // There can only be one page at a time,
 // but there can be more than one droppable per page
 const Page = () => {
-  const [columns, setColumns] = useState([getItems(10)]);
+  const [columns, setColumns] = useState([getItems(1)]);
 
   const handleDragEnd = ({ source, destination }) => {
     // source column
@@ -118,33 +112,57 @@ const Page = () => {
 
     // if we're dropping the node in the same column
     if (destination && sourceIndex === destIndex)
-      newColumns[sourceIndex] = reorder(columns[sourceIndex], source.index, destination.index);
+      newColumns[sourceIndex] = reorder(
+        columns[sourceIndex],
+        source.index,
+        destination.index
+      );
 
     // if we're dropping the node in a different column
     if (destination && sourceIndex !== destIndex) {
       // move node from source to destination column, returns updated columns
-      const [sourceColumn, destColumn] = move(columns[sourceIndex], columns[destIndex], source, destination);
+      const [sourceColumn, destColumn] = move(
+        columns[sourceIndex],
+        columns[destIndex],
+        source,
+        destination
+      );
 
       // update resulting columns
       newColumns[sourceIndex] = sourceColumn;
       newColumns[destIndex] = destColumn;
-      
     }
 
     // clear any potentially empty columns
     newColumns = newColumns.filter(group => group.length);
     setColumns(newColumns);
-  }
+  };
 
-  const handleAddColumn = () =>
-    setColumns(col => [[], ...col, []]);
+  const handleAddColumn = () => setColumns(col => [[], ...col, []]);
+
+  const handleAddElement = index => {
+    const cols = Array.from(columns);
+
+    cols[index] = [
+      ...cols[index],
+      {
+        id: `item-${new Date().getTime()}`,
+        content: "item"
+      }
+    ];
+
+    setColumns(cols);
+  };
 
   return (
-    <DragDropContext onBeforeCapture={handleAddColumn} onDragEnd={handleDragEnd}>
-      <div style={{ display: 'flex' }}>
-        {columns.map((column, i) => 
-          <Column column={column} index={i} />
-        )}
+    <DragDropContext
+      onBeforeCapture={handleAddColumn}
+      onDragEnd={handleDragEnd}
+    >
+      <div style={{ display: "flex" }}>
+        {columns.map((column, i) => (
+          <Column column={column} index={i} onAddElement={handleAddElement} />
+        ))}
       </div>
     </DragDropContext>
   );
