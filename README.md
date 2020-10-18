@@ -2,7 +2,7 @@
 This project aims to re-create the concept of dynamically editable components seen on
 [notion.so](https://notion.so).
 
-## Why?
+## Motivation
 The idea of the end user being able to freely manipulate website elements is really powerful. Having an
 opensource project like this means that developers can create their own custom components, or incorporate this
 functionality in part of their react websites.
@@ -11,7 +11,7 @@ functionality in part of their react websites.
 It's actually really easy!
 
 Each dynamic component has 2 modes: `display`, and `edit`. To create a new dynamic component, simply create a
-component for each these modes and pass it in to the `ComponentWrapper` component. You can also chose to pass
+component for each these modes and pass it in to the `DynamicComponent` component. You can also chose to pass
 in props to each mode component.
 
 Below is the actual code for the `TextField` component.
@@ -61,7 +61,7 @@ const TextEditComponent = ({ text = '', setText, setComponentMode, ...props }) =
 
 // This is the final exported component
 const TextField = ({ text, setText, displayProps, editProps }) =>
-  <ComponentWrapper 
+  <DynamicComponent 
 
     displayComponent={<TextDisplayComponent />}
     editComponent={<TextEditComponent />}
@@ -99,33 +99,6 @@ const App = () => {
 ```
 With the functionality implemented in the `TextField` component defined above, the component should become
 editable when hovered.
-
-## Basic Docs
-This project is still in very early development, but if you want to create your own component, here's what you should
-know.
-
-### ComponentWrapper
-You're gonna need to use this component to create new dynamic components.
-| Prop             | Required | Type           | Description                                   |
-| :--------------: | :------: | :------------: | :-------------------------------------------: |
-| displayComponent |        ✓ | Component      | The component to render when in display mode. |
-| editComponent    |        ✓ | Component      | The component to render when in edit mode.    |
-| displayProps     |          | Object         | Any props passed to `displayComponent`        |
-| editProps        |          | Object         | Any props passed to `editComponent`           |
-| mode             |          | String         | The default mode of the component. If not defined, the component will not render | 
-
-## TODO
-- Create `Page` Component. (Reponsible for drag-n-dropability of dynamic components). 
-  Might use react-beautiful-dnd for this.
-- Create proper Docs/Wiki and elaborate on making custom components.
-- Move away from any styles library. Right now parts of the project still use Material-UI. Designers welcome!
-  - Allow the versatility of using any passed down component for styles. 
-- Create more dynamic components. As of now only `TextField` has been written. Ideas include
-  - Image
-  - Calendar
-  - Code Block
-  - LaTeX Block
-  - Links
 
 ## PRs are welcome!
 If you want to help me out on this project, feel free! Any suggestions are welcome :)
