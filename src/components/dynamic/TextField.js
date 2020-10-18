@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import ComponentWrapper from "../index";
+import DynamicComponent from "../DynamicComponent";
 
 import { Typography, InputBase as MuiInputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
@@ -59,7 +59,7 @@ const TextEditComponent = ({
 };
 
 const TextField = ({ text, setText, displayProps, editProps }) => (
-  <ComponentWrapper
+  <DynamicComponent
     displayComponent={<TextDisplayComponent />}
     editComponent={<TextEditComponent />}
     displayProps={{

@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, cloneElement } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
+
+import TextField from "./dynamic/TextField";
+
+// example dynamic component
+const MyField = () => <TextField text="hello world" setText={() => {}} />;
 
 // gen dummy data
 const getItems = (count, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${k + offset}-${new Date().getTime()}`,
-    content: `item ${k + offset}`
+    id: `item-${new Date().getTime()}`,
+    component: <MyField />
   }));
 
 /**
@@ -40,19 +45,19 @@ const grid = 8;
 
 const getItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
-  userSelect: "none",
+  // userSelect: "none",
   padding: grid * 2,
   margin: `0 0 ${grid}px 0`,
   // margin: isDragging ? `0 ${2 * grid}px ${grid}px ${2 * grid}px` : `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  background: isDragging ? "lightgreen" : "grey",
+  // background: isDragging ? "lightgreen" : "grey",
 
   // styles we need to apply on draggables
   ...draggableStyle
 });
 
-const getColumnStyle = hasItems => ({
+const getColumnStyle = (isDragging, hasItems) => ({
   background: hasItems ? "transparent" : "lightBlue",
   padding: grid,
   display: "flex",
@@ -66,7 +71,7 @@ const Column = ({ column, index, onAddElement }) => {
       {(provided, snapshot) => (
         <div
           ref={provided.innerRef}
-          style={getColumnStyle(column.length > 0)}
+          style={getColumnStyle(snapshot.isDragging, column.length > 0)}
           {...provided.droppableProps}
         >
           {column.map((dynComp, j) => (
@@ -81,12 +86,13 @@ const Column = ({ column, index, onAddElement }) => {
                     provided.draggableProps.style
                   )}
                 >
-                  {dynComp.content}
+                  {/* clone the given element to forward any refs */}
+                  {cloneElement(dynComp.component, {})}
                 </div>
               )}
             </Draggable>
           ))}
-          {provided.placeholder}
+          {column.length > 0 && provided.placeholder}
           {column.length > 0 && (
             <button onClick={() => onAddElement(index)}>add element</button>
           )}
@@ -148,7 +154,7 @@ const Page = () => {
       ...cols[index],
       {
         id: `item-${new Date().getTime()}`,
-        content: "item"
+        component: <MyField />
       }
     ];
 

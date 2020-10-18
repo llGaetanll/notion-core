@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { Draggable } from "react-beautiful-dnd";
 
-import { Box, MenuItem } from "@material-ui/core";
+import { Box } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 
-import Actions from "../util/actions";
+import Actions from "./util/actions";
 
 const useStyles = makeStyles(theme => ({
   component: {
@@ -58,10 +57,7 @@ const DynamicComponent = ({ displayComponent, editComponent, ...props }) => {
   // when the mode of the component changes from the outside
   // update the mode
   useEffect(() => {
-    if (mode !== componentMode) {
-      console.log("updating mode to:", mode);
-      setComponentMode(mode);
-    }
+    if (mode !== componentMode) setComponentMode(mode);
   }, [mode]);
 
   // If no mode is specified, the element does not render
@@ -77,12 +73,10 @@ const DynamicComponent = ({ displayComponent, editComponent, ...props }) => {
   );
 
   return (
-    <Draggable>
-      <Box className={classes.component}>
-        <Actions />
-        {Component}
-      </Box>
-    </Draggable>
+    <Box className={classes.component}>
+      <Actions />
+      {Component}
+    </Box>
   );
 };
 
