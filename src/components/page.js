@@ -1,15 +1,18 @@
 import React, { useState, cloneElement } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
+import Example from "./dynamic/Example";
 import TextField from "./dynamic/TextField";
+import Actions from "./util/actions";
 
 // example dynamic component
-const MyField = () => <TextField text="hello world" setText={() => {}} />;
+// const MyField = () => <TextField text="hello world" setText={() => {}} />;
+const MyField = () => <Example />;
 
 // gen dummy data
 const getItems = (count, offset = 0) =>
   Array.from({ length: count }, (v, k) => k).map(k => ({
-    id: `item-${new Date().getTime()}`,
+    id: `item-${k + offset}-${new Date().getTime()}`,
     component: <MyField />
   }));
 
@@ -41,29 +44,39 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return [sourceClone, destClone];
 };
 
-const grid = 8;
+const WIDTH = 16;
 
-const getItemStyle = (isDragging, draggableStyle) => ({
+const getDragItemStyle = (isDragging, draggableStyle) => ({
   // some basic styles to make the items look a bit nicer
-  // userSelect: "none",
-  padding: grid * 2,
-  margin: `0 0 ${grid}px 0`,
+  userSelect: "none",
+  padding: `0 64px`,
   // margin: isDragging ? `0 ${2 * grid}px ${grid}px ${2 * grid}px` : `0 0 ${grid}px 0`,
 
   // change background colour if dragging
-  // background: isDragging ? "lightgreen" : "grey",
+  background: "grey",
 
   // styles we need to apply on draggables
   ...draggableStyle
 });
 
-const getColumnStyle = (isDragging, hasItems) => ({
-  background: hasItems ? "transparent" : "lightBlue",
-  padding: grid,
-  display: "flex",
-  flex: hasItems ? 1 : 0,
-  flexDirection: "column"
-});
+const getColumnStyle = (isDragging, hasItems) => {
+  console.log(isDragging);
+
+  return {
+    background: hasItems ? "transparent" : "lightBlue",
+    border: "1px solid black",
+
+    flex: hasItems ? 1 : 0,
+    width: hasItems ? "auto" : WIDTH
+    // paddingRight: isDragging ? 0 : WIDTH
+
+    // width: hasItems ? "auto" : WIDTH,
+    // display: "flex",
+    // flex: 1,
+    // flex: hasItems ? 1 : 0,
+    // flexDirection: "column"
+  };
+};
 
 const Column = ({ column, index, onAddElement }) => {
   return (
@@ -81,18 +94,20 @@ const Column = ({ column, index, onAddElement }) => {
                   ref={provided.innerRef}
                   {...provided.draggableProps}
                   {...provided.dragHandleProps}
-                  style={getItemStyle(
+                  style={getDragItemStyle(
                     snapshot.isDragging,
                     provided.draggableProps.style
                   )}
                 >
+                  <Actions />
                   {/* clone the given element to forward any refs */}
                   {cloneElement(dynComp.component, {})}
                 </div>
               )}
             </Draggable>
           ))}
-          {column.length > 0 && provided.placeholder}
+          {/* {column.length > 0 && provided.placeholder} */}
+          {provided.placeholder}
           {column.length > 0 && (
             <button onClick={() => onAddElement(index)}>add element</button>
           )}
@@ -105,7 +120,7 @@ const Column = ({ column, index, onAddElement }) => {
 // There can only be one page at a time,
 // but there can be more than one droppable per page
 const Page = () => {
-  const [columns, setColumns] = useState([getItems(1)]);
+  const [columns, setColumns] = useState([getItems(5), getItems(3, 5)]);
 
   const handleDragEnd = ({ source, destination }) => {
     // source column
@@ -144,8 +159,10 @@ const Page = () => {
     setColumns(newColumns);
   };
 
-  const handleAddColumn = () =>
-    setColumns(col => [[], ...col.map(c => [c, []]).flat()]);
+  // const handleAddColumn = () =>
+  //   setColumns(col => [[], ...col.map(c => [c, []]).flat()]);
+
+  const handleAddColumn = () => setColumns(col => [...col, []]);
 
   const handleAddElement = index => {
     const cols = Array.from(columns);

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import DynamicComponent from "../DynamicComponent";
 
 import { Typography, InputBase as MuiInputBase } from "@material-ui/core";
@@ -6,10 +6,17 @@ import { makeStyles } from "@material-ui/core/styles";
 
 const useStyles = makeStyles(theme => ({
   display: {
-    width: "100%"
+    width: "100%",
+    minHeight: "inherit",
+    background: "lightblue",
+
+    display: "flex",
+    alignItems: "center"
   },
   edit: {
-    width: "100%"
+    width: "100%",
+    minHeight: "inherit",
+    background: "lightgreen"
   }
 }));
 
@@ -45,11 +52,13 @@ const TextEditComponent = ({
   //   ref.current.focus();
   // });
 
+  const handleDisplay = () => setComponentMode("display");
   const handleEdit = event => setText(event.target.value);
 
   return (
     <MuiInputBase
       className={classes.edit}
+      onMouseLeave={handleDisplay}
       onChange={handleEdit}
       value={text}
       inputRef={ref}

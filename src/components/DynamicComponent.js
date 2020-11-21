@@ -6,19 +6,21 @@ import { makeStyles } from "@material-ui/core/styles";
 import Actions from "./util/actions";
 
 const useStyles = makeStyles(theme => ({
+  // these are the default styles shared by all dynamic
+  // components. They can be overwritten of course
   component: {
     display: "flex",
     // size padding
-    padding: `0 ${theme.spacing(1)}px`,
+    // padding: `0 ${theme.spacing(1)}px`,
 
     // display actions menu on hover
-    "&:hover $action": {
-      opacity: 1
-    },
+    // "&:hover $action": {
+    //   opacity: 1
+    // },
 
-    "&:hover": {
-      backgroundColor: theme.palette.grey[100]
-    },
+    // "&:hover": {
+    //   backgroundColor: theme.palette.grey[100]
+    // },
 
     minHeight: 48,
     alignItems: "center"
@@ -35,8 +37,8 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-/* Components have 2 default modes, display and edit. If no mode is specified, the element does not render
- *  The Component's state is shared across all modes
+/* A DynamicComponent has 2 default modes, display and edit. If no mode is specified, the element does not render
+ * The Component's state is shared across all modes
  *  - the component's state is provided to `displayComponent`
  *  - the mutations are provided to `editComponent`
  *
@@ -44,8 +46,8 @@ const useStyles = makeStyles(theme => ({
  *  `displayComponent` is passed the state of the component
  *  `editComponent` is passed both the state and the mutations.
  *
- *  ComponentWrapper is not responsible for any component state, which would be handled by a higher order
- *  component.
+ * Note that DynamicComponent is not responsible for any component state, which would be handled by a higher order
+ * component. It is also nost responsible for any drag and drop features, these are handled by the page component.
  */
 const DynamicComponent = ({ displayComponent, editComponent, ...props }) => {
   const classes = useStyles();
@@ -72,12 +74,7 @@ const DynamicComponent = ({ displayComponent, editComponent, ...props }) => {
     { ...componentProps, setComponentMode }
   );
 
-  return (
-    <Box className={classes.component}>
-      <Actions />
-      {Component}
-    </Box>
-  );
+  return <Box className={classes.component}>{Component}</Box>;
 };
 
 export default DynamicComponent;

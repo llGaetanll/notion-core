@@ -10,7 +10,16 @@ const App = () => {
   // see: github.com/llGaetanll/modal-handler
   return (
     <FeedbackProvider>
+      {/* <div
+        style={{
+          display: "flex",
+          width: "100vw",
+          height: "100vh",
+          justifyContent: "center"
+        }}
+      > */}
       <Page />
+      {/* </div> */}
     </FeedbackProvider>
   );
 };
