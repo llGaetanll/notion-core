@@ -102,6 +102,6 @@ editable when hovered.
 
 ## PRs are welcome!
 If you want to help me out on this project, feel free! Any help or suggestion is greatly appreciated.
-### Contrubuting
+### Contributing
 If you would like to help contribute to the project, see the [Dynamic Components Project](https://github.com/llGaetanll/notion-core/projects/2) and contribute a component!
 Alternatively you could contribute an idea for one.
