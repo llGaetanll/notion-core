@@ -1,24 +1,28 @@
 import React, { useRef } from "react";
 import DynamicComponent from "../DynamicComponent";
 
+/*
 import { Typography, InputBase as MuiInputBase } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
+*/
 
-const useStyles = makeStyles(theme => ({
+/*
+const useStyles = makeStyles((theme) => ({
   display: {
     width: "100%",
     minHeight: "inherit",
     background: "lightblue",
 
     display: "flex",
-    alignItems: "center"
+    alignItems: "center",
   },
   edit: {
     width: "100%",
     minHeight: "inherit",
-    background: "lightgreen"
-  }
+    background: "lightgreen",
+  },
 }));
+*/
 
 const TextDisplayComponent = ({ text, setComponentMode, ...props }) => {
   const classes = useStyles();
@@ -28,13 +32,9 @@ const TextDisplayComponent = ({ text, setComponentMode, ...props }) => {
   const handleEdit = () => setComponentMode("edit");
 
   return (
-    <Typography
-      onMouseEnter={handleEdit}
-      className={classes.display}
-      {...props}
-    >
+    <p onMouseEnter={handleEdit} className={classes.display} {...props}>
       {text}
-    </Typography>
+    </p>
   );
 };
 
@@ -53,10 +53,10 @@ const TextEditComponent = ({
   // });
 
   const handleDisplay = () => setComponentMode("display");
-  const handleEdit = event => setText(event.target.value);
+  const handleEdit = (event) => setText(event.target.value);
 
   return (
-    <MuiInputBase
+    <input
       className={classes.edit}
       onMouseLeave={handleDisplay}
       onChange={handleEdit}
@@ -73,12 +73,12 @@ const TextField = ({ text, setText, displayProps, editProps }) => (
     editComponent={<TextEditComponent />}
     displayProps={{
       text,
-      ...displayProps
+      ...displayProps,
     }}
     editProps={{
       text,
       setText,
-      ...editProps
+      ...editProps,
     }}
     // default mode of the component
     // this can be changed from within

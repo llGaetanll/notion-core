@@ -1,4 +1,3 @@
-import React from "react";
 import DynamicComponent from "../DynamicComponent";
 
 // Here, the display component is just a simple `p` tag.
