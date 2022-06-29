@@ -2,7 +2,7 @@ import React from "react";
 
 import { FeedbackProvider } from "./util/feedback";
 
-import Page from "./components/Page";
+import Page from "./components/page";
 
 const App = () => {
   // the `Page` component is not responsible for modals used by

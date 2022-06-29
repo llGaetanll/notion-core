@@ -11,13 +11,13 @@ const MyField = () => <Example />;
 
 // gen dummy data
 const getItems = (count, offset = 0) =>
-  Array.from({ length: count }, (v, k) => k).map(k => ({
+  Array.from({ length: count }, (v, k) => k).map((k) => ({
     id: `item-${k + offset}-${new Date().getTime()}`,
-    component: <MyField />
+    component: <MyField />,
   }));
 
 /**
- * Reorders items in one list
+ * Reorders items in one list. Swaps start index with end index
  */
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -56,7 +56,7 @@ const getDragItemStyle = (isDragging, draggableStyle) => ({
   background: "grey",
 
   // styles we need to apply on draggables
-  ...draggableStyle
+  ...draggableStyle,
 });
 
 const getColumnStyle = (isDragging, hasItems) => {
@@ -67,7 +67,7 @@ const getColumnStyle = (isDragging, hasItems) => {
     border: "1px solid black",
 
     flex: hasItems ? 1 : 0,
-    width: hasItems ? "auto" : WIDTH
+    width: hasItems ? "auto" : WIDTH,
     // paddingRight: isDragging ? 0 : WIDTH
 
     // width: hasItems ? "auto" : WIDTH,
@@ -155,24 +155,24 @@ const Page = () => {
     }
 
     // clear any potentially empty columns
-    newColumns = newColumns.filter(group => group.length);
+    newColumns = newColumns.filter((group) => group.length);
     setColumns(newColumns);
   };
 
   // const handleAddColumn = () =>
   //   setColumns(col => [[], ...col.map(c => [c, []]).flat()]);
 
-  const handleAddColumn = () => setColumns(col => [...col, []]);
+  const handleAddColumn = () => setColumns((col) => [...col]);
 
-  const handleAddElement = index => {
+  const handleAddElement = (index) => {
     const cols = Array.from(columns);
 
     cols[index] = [
       ...cols[index],
       {
         id: `item-${new Date().getTime()}`,
-        component: <MyField />
-      }
+        component: <MyField />,
+      },
     ];
 
     setColumns(cols);
