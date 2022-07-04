@@ -37,6 +37,8 @@ const move = (source, destination, droppableSource, droppableDestination) => {
 
 // There can only be one page at a time,
 // but there can be more than one droppable per page
-const Page = () => {};
+const Page = ({ children }) => {
+  return <div>{children}</div>;
+};
 
 export default Page;
