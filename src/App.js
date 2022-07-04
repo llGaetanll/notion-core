@@ -10,6 +10,7 @@ const App = () => {
   // see: github.com/llGaetanll/modal-handler
   return (
     <FeedbackProvider>
+      <Page />
       {/* <div
         style={{
           display: "flex",
@@ -18,7 +19,6 @@ const App = () => {
           justifyContent: "center"
         }}
       > */}
-      <Page />
       {/* </div> */}
     </FeedbackProvider>
   );

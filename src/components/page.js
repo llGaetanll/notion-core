@@ -1,4 +1,4 @@
-import React, { useState, cloneElement } from "react";
+import React, { useState } from "react";
 import { DragDropContext, Droppable, Draggable } from "react-beautiful-dnd";
 
 import Example from "./dynamic/Example";
@@ -17,7 +17,7 @@ const getItems = (count, offset = 0) =>
   }));
 
 /**
- * Reorders items in one list. Swaps start index with end index
+ * Reorders items in one list
  */
 const reorder = (list, startIndex, endIndex) => {
   const result = Array.from(list);
@@ -44,84 +44,101 @@ const move = (source, destination, droppableSource, droppableDestination) => {
   return [sourceClone, destClone];
 };
 
-const WIDTH = 16;
-
-const getDragItemStyle = (isDragging, draggableStyle) => ({
-  // some basic styles to make the items look a bit nicer
-  userSelect: "none",
-  padding: `0 64px`,
-  // margin: isDragging ? `0 ${2 * grid}px ${grid}px ${2 * grid}px` : `0 0 ${grid}px 0`,
-
-  // change background colour if dragging
-  background: "grey",
-
-  // styles we need to apply on draggables
-  ...draggableStyle,
-});
-
-const getColumnStyle = (isDragging, hasItems) => {
-  console.log(isDragging);
-
-  return {
-    background: hasItems ? "transparent" : "lightBlue",
-    border: "1px solid black",
-
-    flex: hasItems ? 1 : 0,
-    width: hasItems ? "auto" : WIDTH,
-    // paddingRight: isDragging ? 0 : WIDTH
-
-    // width: hasItems ? "auto" : WIDTH,
-    // display: "flex",
-    // flex: 1,
-    // flex: hasItems ? 1 : 0,
-    // flexDirection: "column"
-  };
-};
-
-const Column = ({ column, index, onAddElement }) => {
+const List = ({ els, index, onAddElement, col }) => {
+  console.log(els);
   return (
-    <Droppable key={index} droppableId={`${index}`}>
-      {(provided, snapshot) => (
+    <Droppable
+      key={index}
+      droppableId={`${index}`}
+      direction={col ? "vertical" : "horizontal"}
+      // direction="horizontal"
+    >
+      {(provided) => (
         <div
           ref={provided.innerRef}
-          style={getColumnStyle(snapshot.isDragging, column.length > 0)}
+          style={{
+            display: "flex",
+            flexDirection: col ? "column" : "row",
+            border: "1px solid black",
+            flex: 1,
+          }}
           {...provided.droppableProps}
         >
-          {column.map((dynComp, j) => (
-            <Draggable key={dynComp.id} draggableId={dynComp.id} index={j}>
-              {(provided, snapshot) => (
-                <div
-                  ref={provided.innerRef}
-                  {...provided.draggableProps}
-                  {...provided.dragHandleProps}
-                  style={getDragItemStyle(
-                    snapshot.isDragging,
-                    provided.draggableProps.style
-                  )}
-                >
-                  <Actions />
-                  {/* clone the given element to forward any refs */}
-                  {cloneElement(dynComp.component, {})}
-                </div>
-              )}
-            </Draggable>
-          ))}
+          {els.map((dynComp, j) => {
+            const id = typeof dynComp === Array ? `array-${j}` : dynComp.id;
+
+            return (
+              <Draggable key={id} draggableId={id} index={j}>
+                {(provided) => (
+                  <div
+                    ref={provided.innerRef}
+                    {...provided.draggableProps}
+                    {...provided.dragHandleProps}
+                    style={{
+                      // some basic styles to make the items look a bit nicer
+                      flex: 1,
+                      userSelect: "none",
+                      padding: `0 64px`,
+                      background: "grey",
+                      ...provided.draggableProps.style,
+                    }}
+                  >
+                    <Actions />
+                    {dynComp instanceof Array ? (
+                      <List els={dynComp} index={2} col={!col} />
+                    ) : (
+                      <>
+                        {
+                          /* clone the given element to forward any refs */
+                          React.cloneElement(dynComp.component, {})
+                        }
+                      </>
+                    )}
+                  </div>
+                )}
+              </Draggable>
+            );
+          })}
           {/* {column.length > 0 && provided.placeholder} */}
           {provided.placeholder}
-          {column.length > 0 && (
-            <button onClick={() => onAddElement(index)}>add element</button>
-          )}
+          {/* <button onClick={() => onAddElement(index)}>add element</button> */}
         </div>
       )}
     </Droppable>
   );
 };
 
-// There can only be one page at a time,
-// but there can be more than one droppable per page
+/*
+ * Only one page at once. it can contain columns and rows
+ */
 const Page = () => {
-  const [columns, setColumns] = useState([getItems(5), getItems(3, 5)]);
+  // const [column, setColumns] = useState(getItems(5));
+  const [els, setEls] = useState([
+    {
+      id: "1",
+      component: <MyField />,
+    },
+    {
+      id: "2",
+      component: <MyField />,
+    },
+    [
+      {
+        id: "3",
+        component: <MyField />,
+      },
+      {
+        id: "4",
+        component: <MyField />,
+      },
+      {
+        id: "5",
+        component: <MyField />,
+      },
+    ],
+  ]);
 
+  /*
   const handleDragEnd = ({ source, destination }) => {
     // source column
     const sourceIndex = +source.droppableId;
@@ -158,36 +175,28 @@ const Page = () => {
     newColumns = newColumns.filter((group) => group.length);
     setColumns(newColumns);
   };
+  */
 
   // const handleAddColumn = () =>
   //   setColumns(col => [[], ...col.map(c => [c, []]).flat()]);
 
-  const handleAddColumn = () => setColumns((col) => [...col]);
+  // const handleAddColumn = () => setColumns((col) => [...col]);
 
   const handleAddElement = (index) => {
-    const cols = Array.from(columns);
-
-    cols[index] = [
-      ...cols[index],
-      {
-        id: `item-${new Date().getTime()}`,
-        component: <MyField />,
-      },
-    ];
-
-    setColumns(cols);
+    // const cols = Array.from(column);
+    // cols[index] = [
+    //   ...cols[index],
+    //   {
+    //     id: `item-${new Date().getTime()}`,
+    //     component: <MyField />,
+    //   },
+    // ];
+    // setColumns(cols);
   };
 
   return (
-    <DragDropContext
-      onBeforeCapture={handleAddColumn}
-      onDragEnd={handleDragEnd}
-    >
-      <div style={{ display: "flex" }}>
-        {columns.map((column, i) => (
-          <Column column={column} index={i} onAddElement={handleAddElement} />
-        ))}
-      </div>
+    <DragDropContext>
+      <List els={els} index={1} col />
     </DragDropContext>
   );
 };

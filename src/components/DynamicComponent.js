@@ -5,7 +5,7 @@ import { makeStyles } from "@material-ui/core/styles";
 
 import Actions from "./util/actions";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   // these are the default styles shared by all dynamic
   // components. They can be overwritten of course
   component: {
@@ -23,7 +23,7 @@ const useStyles = makeStyles(theme => ({
     // },
 
     minHeight: 48,
-    alignItems: "center"
+    alignItems: "center",
   },
   action: {
     opacity: 0,
@@ -32,9 +32,9 @@ const useStyles = makeStyles(theme => ({
     transform: "translateX(-100%)",
 
     "&:hover": {
-      backgroundColor: "transparent"
-    }
-  }
+      backgroundColor: "transparent",
+    },
+  },
 }));
 
 /* A DynamicComponent has 2 default modes, display and edit. If no mode is specified, the element does not render
